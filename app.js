@@ -1,6 +1,7 @@
 let btn = document.querySelector("#btn");
 let content = document.querySelector("#content");
 let voice = document.querySelector("#voice");
+
 function speak(text) {
   let textSpeak = new SpeechSynthesisUtterance(text);
   textSpeak.rate = 1;
@@ -9,6 +10,7 @@ function speak(text) {
   textSpeak.lang = "hi-GB";
   window.speechSynthesis.speak(textSpeak);
 }
+
 function wishMe() {
   let day = new Date();
   let hours = day.getHours();
@@ -20,13 +22,16 @@ function wishMe() {
     speak("Good Evening");
   }
 }
-// window.addEventListener("load", () => {
-//   wishMe();
-// });
+
+// Uncomment to wish the user on page load
+window.addEventListener("load", () => {
+  wishMe();
+});
 
 let speechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 let recognition = new speechRecognition();
+
 recognition.onresult = (event) => {
   let currentIndex = event.resultIndex;
   let transcript = event.results[currentIndex][0].transcript;
@@ -43,27 +48,28 @@ btn.addEventListener("click", () => {
 function takeCommand(message) {
   btn.style.display = "flex";
   voice.style.display = "none";
-  if (message.includes("hello") || "hey") {
-    speak("hello sir,what can i help you");
-  }
-  if (message.includes("who are you")) {
-    speak("I am Virtual Assistant created by Aditya");
+
+  // Fixed condition here
+  if (message.includes("hello") || message.includes("hey")) {
+    speak("Hello sir, what can I help you with?");
+  } else if (message.includes("who are you")) {
+    speak("I am a Virtual Assistant created by Aditya");
   } else if (message.includes("open youtube")) {
-    speak("opening youtube wait");
+    speak("Opening YouTube, please wait.");
     window.open("https://www.youtube.com/", "_blank");
   } else if (message.includes("open google")) {
-    speak("opening google wait");
+    speak("Opening Google, please wait.");
     window.open("https://www.google.com/", "_blank");
   } else if (message.includes("open gmail")) {
-    speak("opening google wait");
+    speak("Opening Gmail, please wait.");
     window.open("https://mail.google.com/mail/u/0/#inbox", "_blank");
   } else if (message.includes("open amazon")) {
-    speak("opening amazon wait");
+    speak("Opening Amazon, please wait.");
     window.open("https://www.amazon.in/", "_blank");
   } else if (message.includes("time")) {
     let time = new Date().toLocaleString(undefined, {
-      hour: "numeric",
-      minutes: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
     speak(time);
   } else if (message.includes("date")) {
@@ -74,7 +80,7 @@ function takeCommand(message) {
     speak(date);
   } else {
     let finalText =
-      "this is what I found related to your queries regarding " +
+      "This is what I found related to your queries regarding " +
       message.replace("synthia", "");
     speak(finalText);
     window.open(
